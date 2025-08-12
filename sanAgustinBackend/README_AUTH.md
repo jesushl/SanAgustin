@@ -62,6 +62,16 @@ python crear_tablas_auth.py
 python crear_admin.py
 ```
 
+### 7. Habilitar Autenticación (Opcional)
+
+```bash
+# Para habilitar la autenticación OAuth2.0
+python enable_auth.py enable
+
+# Para deshabilitar la autenticación OAuth2.0
+python enable_auth.py disable
+```
+
 ## Flujo de Autenticación
 
 ### 1. Login con OAuth

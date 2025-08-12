@@ -25,8 +25,9 @@ class User(UserBase):
     is_admin: bool
     created_at: datetime
     
-    class Config:
-        from_attributes = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class RegistroPendienteBase(BaseModel):
     email: EmailStr
@@ -50,8 +51,9 @@ class RegistroPendiente(RegistroPendienteBase):
     approved_at: Optional[datetime] = None
     created_at: datetime
     
-    class Config:
-        from_attributes = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class ContactoBase(BaseModel):
     telefono: Optional[str] = None
@@ -67,8 +69,9 @@ class Contacto(ContactoBase):
     created_at: datetime
     updated_at: datetime
     
-    class Config:
-        from_attributes = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class OAuthUserInfo(BaseModel):
     email: str

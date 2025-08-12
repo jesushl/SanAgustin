@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, Column, Integer, String, DateTime, Foreign
 from sqlalchemy.orm import sessionmaker, relationship
 from pydantic import BaseModel
 from datetime import datetime
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import Session
 from typing import List
 from datetime import timedelta
@@ -13,7 +13,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 # Importar modelos de autenticación
-from models.auth_models import Usuario, RegistroPendiente, Contacto as ContactoAuth
+# from models.auth_models import Usuario, RegistroPendiente, Contacto as ContactoAuth
 
 # Creación de la base y el engine
 SQLALCHEMY_DATABASE_URL = "sqlite:///./comunidad.db"
@@ -130,8 +130,9 @@ class EstacionamientoResponse(BaseModel):
     color: str
     es_visita: bool
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class ReservaAutomaticaVisita(BaseModel):
     numero_departamento: str
@@ -146,8 +147,9 @@ class ContactoResponse(BaseModel):
     numero_contacto: str
     correo: str
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 
 class ReservaAreaComunBase(BaseModel):
@@ -156,8 +158,9 @@ class ReservaAreaComunBase(BaseModel):
     periodo_fin: datetime
     departamento_id: int
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class ReservaAreaComunResponse(ReservaAreaComunBase):
     id: int
@@ -168,8 +171,9 @@ class ContactoResidenteBase(BaseModel):
     numero_contacto: str
     correo_electronico: str
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class ContactoResidenteResponse(ContactoResidenteBase):
     id: int
@@ -181,8 +185,9 @@ class AdeudoResponse(BaseModel):
     descripcion: str
     fecha: datetime
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class AdeudoCreate(BaseModel):
     departamento_id: int
@@ -376,9 +381,9 @@ def leer_qr_vehiculo(qr_data: str, db: Session = Depends(get_db)):
     return {"message": "QR leído", "data": qr_data}
 
 # Importar y incluir las rutas de autenticación
-from api.auth_routes import router as auth_router
-app.include_router(auth_router)
+# from api.auth_routes import router as auth_router
+# app.include_router(auth_router)
 
 # Configurar OAuth
-from core.oauth_config import oauth
-oauth.init_app(app)
+# from core.oauth_config import oauth
+# oauth.init_app(app)

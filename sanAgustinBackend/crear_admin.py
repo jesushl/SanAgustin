@@ -1,7 +1,7 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from models.auth_models import Usuario
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Crear engine y sesión
 SQLALCHEMY_DATABASE_URL = "sqlite:///./comunidad.db"
@@ -26,7 +26,7 @@ def crear_admin():
         provider_id="admin_001",
         is_active=True,
         is_admin=True,
-        created_at=datetime.utcnow()
+        created_at=datetime.now(timezone.utc)
     )
     
     db.add(admin)

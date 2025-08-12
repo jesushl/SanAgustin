@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from jose import JWTError, jwt
 from fastapi import HTTPException, status
 from typing import Optional
@@ -99,7 +99,7 @@ class AuthService:
         # Marcar como aprobado
         pending_reg.is_approved = True
         pending_reg.approved_by = admin_user_id
-        pending_reg.approved_at = datetime.utcnow()
+        pending_reg.approved_at = datetime.now(timezone.utc)
         
         self.db.commit()
         return user
