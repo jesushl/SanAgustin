@@ -12,6 +12,9 @@ from datetime import timedelta
 import logging
 logging.basicConfig(level=logging.INFO)
 
+# Importar modelos de autenticación
+from models.auth_models import Usuario, RegistroPendiente, Contacto as ContactoAuth
+
 # Creación de la base y el engine
 SQLALCHEMY_DATABASE_URL = "sqlite:///./comunidad.db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
@@ -371,3 +374,11 @@ def generar_qr_estacionamiento(estacionamiento: EstacionamientoResponse, db: Ses
 def leer_qr_vehiculo(qr_data: str, db: Session = Depends(get_db)):
     # Aquí iría la lógica para leer el QR y obtener la información del vehículo
     return {"message": "QR leído", "data": qr_data}
+
+# Importar y incluir las rutas de autenticación
+from api.auth_routes import router as auth_router
+app.include_router(auth_router)
+
+# Configurar OAuth
+from core.oauth_config import oauth
+oauth.init_app(app)
