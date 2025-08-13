@@ -1,4 +1,5 @@
 import api from '../config/api';
+import { demoService } from './demoService';
 import type {
   Estacionamiento,
   ContactoResidente,
@@ -15,6 +16,12 @@ interface ApiResponse<T> {
   data?: T;
   error?: string;
 }
+
+// Función para detectar si estamos en modo demo
+const isDemoMode = (): boolean => {
+  const token = localStorage.getItem('token');
+  return token === 'demo_token_residente' || token === 'demo_token_admin';
+};
 
 class ApiService {
   private getHeaders(): HeadersInit {
@@ -46,15 +53,24 @@ class ApiService {
 
   // Panel de residente
   async getPanelResidente() {
+    if (isDemoMode()) {
+      return demoService.getPanelResidente();
+    }
     return this.request('/panel-residente');
   }
 
   // Áreas comunes
   async getAreasComunes() {
+    if (isDemoMode()) {
+      return demoService.getAreasComunes();
+    }
     return this.request('/areas-comunes');
   }
 
   async verificarDisponibilidadAreaComun(areaComunId: number, fechaInicio: string, fechaFin: string) {
+    if (isDemoMode()) {
+      return demoService.verificarDisponibilidadAreaComun(areaComunId, fechaInicio, fechaFin);
+    }
     const params = new URLSearchParams({
       area_comun_id: areaComunId.toString(),
       fecha_inicio: fechaInicio,
@@ -68,6 +84,9 @@ class ApiService {
     periodo_inicio: string;
     periodo_fin: string;
   }) {
+    if (isDemoMode()) {
+      return demoService.crearReservaAreaComun(reserva);
+    }
     return this.request('/reservas-area-comun', {
       method: 'POST',
       body: JSON.stringify(reserva)
@@ -75,15 +94,24 @@ class ApiService {
   }
 
   async getReservasAreaComunUsuario() {
+    if (isDemoMode()) {
+      return demoService.getReservasAreaComunUsuario();
+    }
     return this.request('/reservas-area-comun/usuario');
   }
 
   // Lugares de visita
   async getLugaresVisita() {
+    if (isDemoMode()) {
+      return demoService.getLugaresVisita();
+    }
     return this.request('/lugares-visita');
   }
 
   async verificarDisponibilidadLugarVisita(lugarVisitaId: number, fechaInicio: string, fechaFin: string) {
+    if (isDemoMode()) {
+      return demoService.verificarDisponibilidadLugarVisita(lugarVisitaId, fechaInicio, fechaFin);
+    }
     const params = new URLSearchParams({
       lugar_visita_id: lugarVisitaId.toString(),
       fecha_inicio: fechaInicio,
@@ -98,6 +126,9 @@ class ApiService {
     periodo_inicio: string;
     periodo_fin: string;
   }) {
+    if (isDemoMode()) {
+      return demoService.crearReservaVisita(reserva);
+    }
     return this.request('/reservas-visita', {
       method: 'POST',
       body: JSON.stringify(reserva)
@@ -105,6 +136,9 @@ class ApiService {
   }
 
   async getReservasVisitaUsuario() {
+    if (isDemoMode()) {
+      return demoService.getReservasVisitaUsuario();
+    }
     return this.request('/reservas-visita/usuario');
   }
 
@@ -114,6 +148,9 @@ class ApiService {
     modelo_auto?: string;
     color_auto?: string;
   }) {
+    if (isDemoMode()) {
+      return demoService.actualizarEstacionamiento(estacionamientoId, datos);
+    }
     return this.request(`/estacionamiento/${estacionamientoId}`, {
       method: 'PUT',
       body: JSON.stringify(datos)

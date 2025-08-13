@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { apiService } from '../services/api';
-import { AreaComun, ReservaAreaComun } from '../types';
+import type { AreaComun, ReservaAreaComun } from '../types';
 
 const ReservaAreaComun: React.FC = () => {
   const { user } = useAuth();

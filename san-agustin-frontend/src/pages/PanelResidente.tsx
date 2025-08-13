@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { apiService } from '../services/api';
-import { PanelResidente as PanelResidenteType } from '../types';
+import type { PanelResidente as PanelResidenteType } from '../types';
 
 const PanelResidente: React.FC = () => {
   const { user, logout } = useAuth();

@@ -8,25 +8,10 @@ from models.auth_models import Usuario, RegistroPendiente
 from models.auth_schemas import Token, User, RegistroPendiente as RegistroPendienteSchema
 from services.auth_service import AuthService
 from core.oauth_config import oauth, GOOGLE_REDIRECT_URI, FACEBOOK_REDIRECT_URI
-
-# Dependency para obtener la sesión de BD
-def get_db():
-    from main import SessionLocal
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+from core.database import get_db
 
 # Dependency para obtener el usuario actual
-def get_current_user(token: str = Depends(lambda: None), db: Session = Depends(get_db)):
-    auth_service = AuthService(db)
-    payload = auth_service.verify_token(token)
-    email = payload.get("sub")
-    user = auth_service.get_user_by_email(email)
-    if user is None:
-        raise HTTPException(status_code=404, detail="Usuario no encontrado")
-    return user
+from core.auth import get_current_user
 
 # Dependency para verificar si es admin
 def get_current_admin_user(current_user: Usuario = Depends(get_current_user)):

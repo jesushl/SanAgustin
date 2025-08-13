@@ -41,7 +41,6 @@ app.include_router(reserva_visita_router)
 
 # Configurar OAuth
 from core.oauth_config import oauth
-oauth.init_app(app)
 
 @app.get("/")
 def read_root():

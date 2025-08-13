@@ -7,6 +7,12 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Detectar si estamos en modo demo
+  const isDemoMode = (): boolean => {
+    const token = localStorage.getItem('token');
+    return token === 'demo_token_residente' || token === 'demo_token_admin';
+  };
+
   const handleLogout = () => {
     logout();
     navigate('/');
@@ -27,6 +33,11 @@ const Navbar: React.FC = () => {
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
+                {isDemoMode() && (
+                  <span className="bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-xs font-medium">
+                    🧪 Demo Mode
+                  </span>
+                )}
                 <span className="text-sm text-gray-700">
                   Bienvenido, {user?.email}
                 </span>
@@ -97,6 +108,13 @@ const Navbar: React.FC = () => {
           <div className="px-2 pt-2 pb-3 space-y-1">
             {isAuthenticated ? (
               <>
+                {isDemoMode() && (
+                  <div className="px-3 py-2">
+                    <span className="bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-xs font-medium">
+                      🧪 Demo Mode
+                    </span>
+                  </div>
+                )}
                 <div className="px-3 py-2 text-sm text-gray-700">
                   Bienvenido, {user?.email}
                 </div>

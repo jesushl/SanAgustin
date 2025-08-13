@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { apiService } from '../services/api';
-import { Estacionamiento } from '../types';
+import type { Estacionamiento } from '../types';
 
 const EditarVehiculo: React.FC = () => {
   const { user } = useAuth();

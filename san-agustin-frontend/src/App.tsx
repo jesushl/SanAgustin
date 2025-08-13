@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
@@ -8,7 +8,7 @@ import RegistrationSuccess from './pages/RegistrationSuccess';
 import AdminPanel from './pages/AdminPanel';
 import PanelResidente from './pages/PanelResidente';
 import ReservaAreaComun from './pages/ReservaAreaComun';
-import ReservaVisita from './pages/ReservaVisita';
+import ReservaVisitaPage from './pages/ReservaVisita';
 import EditarVehiculo from './pages/EditarVehiculo';
 import AuthSuccess from './pages/AuthSuccess';
 import AuthError from './pages/AuthError';
@@ -27,7 +27,7 @@ function App() {
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/panel-residente" element={<PanelResidente />} />
           <Route path="/reserva-area-comun" element={<ReservaAreaComun />} />
-          <Route path="/reserva-visita" element={<ReservaVisita />} />
+          <Route path="/reserva-visita" element={<ReservaVisitaPage />} />
           <Route path="/editar-vehiculo" element={<EditarVehiculo />} />
           <Route path="/auth-success" element={<AuthSuccess />} />
           <Route path="/auth-error" element={<AuthError />} />

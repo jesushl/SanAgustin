@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { apiService } from '../services/api';
-import { LugarVisita, ReservaVisita } from '../types';
+import type { LugarVisita, ReservaVisita } from '../types';
 
-const ReservaVisita: React.FC = () => {
+const ReservaVisitaPage: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [lugaresVisita, setLugaresVisita] = useState<LugarVisita[]>([]);
@@ -338,4 +338,4 @@ const ReservaVisita: React.FC = () => {
   );
 };
 
-export default ReservaVisita;
+export default ReservaVisitaPage;
