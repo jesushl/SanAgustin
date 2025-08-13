@@ -12,4 +12,7 @@ qrcode
 cryptography
 pyzbar 
 pillow 
-dotenv
+python-dotenv
+httpx
+authlib
+itsdangerous

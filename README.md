@@ -1,181 +1,218 @@
-# San Agustín - Sistema de Gestión de Servicios
+# San Agustín - Sistema de Gestión de Residencias
 
-Sistema completo para la gestión de servicios en la privada San Agustín, incluyendo backend en FastAPI y frontend en React.
+Sistema completo para la gestión de servicios de la privada San Agustín, incluyendo autenticación OAuth, panel de residentes, reservas de áreas comunes y lugares de visita.
 
-## Estructura del Proyecto
+## 🚀 Características Principales
 
+### Autenticación y Registro
+- **OAuth con Google y Facebook**: Autenticación segura mediante proveedores externos
+- **Registro de usuarios**: Sistema de registro pendiente de aprobación por administradores
+- **Roles diferenciados**: Usuarios residentes y administradores con permisos específicos
+
+### Panel de Residente
+- **Información del departamento**: Visualización del número de departamento asignado
+- **Gestión de vehículos**: Información y edición de datos del vehículo registrado
+- **Control de adeudos**: Visualización de adeudos pendientes con números en rojo
+- **Estado de reservas**: Bloqueo de reservas de áreas comunes si hay adeudos pendientes
+
+### Reservas de Áreas Comunes
+- **Calendario interactivo**: Visualización de disponibilidad en tiempo real
+- **Validación de adeudos**: Bloqueo automático si el residente tiene adeudos pendientes
+- **Múltiples áreas**: Palapa, Roof Gardens, Sala de Eventos, Gimnasio
+- **Gestión de reservas**: Creación, visualización y seguimiento de reservas activas
+
+### Reservas de Lugares de Visita
+- **Límite de 24 horas**: Validación automática de duración máxima
+- **Placa opcional**: Registro opcional de placa del vehículo visitante
+- **Calendario de disponibilidad**: Verificación de conflictos de horarios
+- **Gestión de reservas**: Seguimiento de todas las reservas de visita
+
+## 🏗️ Arquitectura del Proyecto
+
+### Backend (FastAPI + SQLAlchemy)
 ```
-SanAgustin/
-├── sanAgustinBackend/          # Backend en FastAPI
-│   ├── main.py                 # Aplicación principal
-│   ├── config.py               # Configuración
-│   ├── requirements.txt        # Dependencias de Python
-│   └── ...
-└── san-agustin-frontend/       # Frontend en React + TypeScript
-    ├── src/
-    │   ├── components/         # Componentes React
-    │   ├── pages/             # Páginas de la aplicación
-    │   ├── services/          # Servicios de API
-    │   ├── types/             # Tipos TypeScript
-    │   └── config/            # Configuración
-    ├── package.json           # Dependencias de Node.js
-    └── ...
+sanAgustinBackend/
+├── main.py                 # Aplicación principal con endpoints
+├── models/                 # Modelos de datos
+│   ├── auth_models.py     # Modelos de autenticación
+│   └── auth_schemas.py    # Esquemas Pydantic
+├── api/                   # Rutas de la API
+│   └── auth_routes.py     # Rutas de autenticación OAuth
+├── services/              # Lógica de negocio
+│   └── auth_service.py    # Servicio de autenticación
+├── core/                  # Configuración central
+│   └── oauth_config.py    # Configuración OAuth
+└── poblar_simple.py       # Script de población de datos
 ```
 
-## Características
+### Frontend (React + TypeScript + Tailwind CSS)
+```
+san-agustin-frontend/
+├── src/
+│   ├── pages/             # Páginas principales
+│   │   ├── PanelResidente.tsx
+│   │   ├── ReservaAreaComun.tsx
+│   │   ├── ReservaVisita.tsx
+│   │   ├── EditarVehiculo.tsx
+│   │   ├── AuthSuccess.tsx
+│   │   └── AuthError.tsx
+│   ├── components/        # Componentes reutilizables
+│   │   └── Navbar.tsx
+│   ├── contexts/          # Contextos de React
+│   │   └── AuthContext.tsx
+│   ├── services/          # Servicios de API
+│   │   └── api.ts
+│   └── types/             # Tipos TypeScript
+│       └── index.ts
+```
 
-### Backend (FastAPI)
-- ✅ Gestión de estacionamientos
-- ✅ Sistema de reservas de áreas comunes
-- ✅ Registro de visitas
-- ✅ Gestión de contactos
-- ✅ Sistema de adeudos
-- ✅ Generación de códigos QR
-- ✅ Base de datos SQLite
-- ✅ API REST completa
+## 🛠️ Instalación y Configuración
 
-### Frontend (React + TypeScript + Tailwind CSS v4 CDN)
-- ✅ Diseño responsivo
-- ✅ Navegación moderna
-- ✅ Dashboard interactivo
-- ✅ Gestión de estacionamientos
-- ✅ Formularios de reserva
-- ✅ Interfaz intuitiva
-- ✅ Tailwind CSS v4 via CDN (configuración simplificada)
-- ✅ Clases personalizadas con CSS puro
-
-## Instalación y Configuración
+### Prerrequisitos
+- Python 3.8+
+- Node.js 16+
+- npm o yarn
 
 ### Backend
 
-1. **Navegar al directorio del backend:**
-   ```bash
-   cd sanAgustinBackend
-   ```
+1. **Clonar y configurar el entorno**:
+```bash
+cd sanAgustinBackend
+python -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-2. **Crear entorno virtual:**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # En Windows: venv\Scripts\activate
-   ```
+2. **Configurar variables de entorno**:
+```bash
+# Crear archivo .env con las siguientes variables:
+GOOGLE_CLIENT_ID=tu_google_client_id
+GOOGLE_CLIENT_SECRET=tu_google_client_secret
+FACEBOOK_CLIENT_ID=tu_facebook_client_id
+FACEBOOK_CLIENT_SECRET=tu_facebook_client_secret
+SECRET_KEY=tu_secret_key_super_seguro
+```
 
-3. **Instalar dependencias:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+3. **Poblar la base de datos**:
+```bash
+python poblar_simple.py
+python asociar_usuario.py
+```
 
-4. **Configurar variables de entorno:**
-   Crear un archivo `.env` en `sanAgustinBackend/` con:
-   ```env
-   DATABASE_URL=sqlite:///./comunidad.db
-   HOST=0.0.0.0
-   PORT=8000
-   DEBUG=True
-   SECRET_KEY=tu_clave_secreta_aqui
-   ```
-
-5. **Ejecutar el servidor:**
-   ```bash
-   uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-   ```
+4. **Ejecutar el servidor**:
+```bash
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
 
 ### Frontend
 
-1. **Navegar al directorio del frontend:**
-   ```bash
-   cd san-agustin-frontend
-   ```
+1. **Instalar dependencias**:
+```bash
+cd san-agustin-frontend
+npm install
+```
 
-2. **Instalar dependencias:**
-   ```bash
-   npm install
-   ```
+2. **Ejecutar en modo desarrollo**:
+```bash
+npm run dev
+```
 
-3. **Configurar variables de entorno:**
-   Crear un archivo `.env.local` en `san-agustin-frontend/` con:
-   ```env
-   VITE_API_BASE_URL=http://localhost:8000
-   VITE_APP_NAME=San Agustín - Gestión de Servicios
-   VITE_APP_VERSION=1.0.0
-   ```
+## 🔐 Flujo de Autenticación
 
-4. **Ejecutar el servidor de desarrollo:**
-   ```bash
-   npm run dev
-   ```
+1. **Registro/Login**: El usuario accede mediante Google o Facebook OAuth
+2. **Verificación**: El sistema verifica si el usuario existe en la base de datos
+3. **Registro pendiente**: Si es nuevo, se crea un registro pendiente de aprobación
+4. **Aprobación**: Los administradores aprueban los registros pendientes
+5. **Acceso**: Una vez aprobado, el usuario puede acceder al panel correspondiente
 
-## Uso
+## 📱 Flujo de Usuario Residente
 
-1. **Iniciar el backend** en `http://localhost:8000`
-2. **Iniciar el frontend** en `http://localhost:5173`
-3. **Acceder a la aplicación** en el navegador
+### Panel Principal
+- **Información del departamento**: Número y datos básicos
+- **Estado de vehículo**: Placa, modelo, color con opción de edición
+- **Adeudos pendientes**: Visualización con números en rojo
+- **Estado de reservas**: Indicador de si puede realizar reservas
 
-## API Endpoints
+### Reservas de Áreas Comunes
+- **Validación automática**: Bloqueo si hay adeudos pendientes
+- **Selección de área**: Palapa, Roof Gardens, Sala de Eventos, Gimnasio
+- **Calendario**: Selección de fecha y hora de inicio/fin
+- **Confirmación**: Creación de reserva con validación de conflictos
 
-### Estacionamientos
-- `GET /estacionamientos/{numero}` - Obtener estacionamiento por número
-- `GET /placas/{placa}` - Validar placa
-- `POST /reservas_visitas/` - Registrar visita
+### Reservas de Visita
+- **Selección de lugar**: Lugares de visita disponibles (V1-V5)
+- **Configuración de tiempo**: Fecha/hora de inicio y fin
+- **Validación de 24 horas**: Límite automático de duración
+- **Placa opcional**: Registro opcional del vehículo visitante
+
+## 🔧 Endpoints Principales
+
+### Autenticación
+- `GET /auth/google/login` - Inicio de login con Google
+- `GET /auth/facebook/login` - Inicio de login con Facebook
+- `POST /auth/register` - Registro de usuario pendiente
+- `GET /auth/me` - Información del usuario actual
+
+### Panel de Residente
+- `GET /panel-residente` - Información completa del panel
+- `PUT /estacionamiento/{id}` - Actualizar datos del vehículo
 
 ### Áreas Comunes
-- `GET /reservas_area_comun/` - Obtener todas las reservas
-- `POST /reservas_area_comun/` - Crear nueva reserva
+- `GET /areas-comunes` - Listar áreas disponibles
+- `GET /reservas-area-comun/disponibilidad` - Verificar disponibilidad
+- `POST /reservas-area-comun` - Crear reserva
+- `GET /reservas-area-comun/usuario` - Reservas del usuario
 
-### Contactos
-- `GET /contactos_residente/` - Obtener todos los contactos
-- `POST /contactos_residente/` - Crear nuevo contacto
+### Lugares de Visita
+- `GET /lugares-visita` - Listar lugares disponibles
+- `GET /reservas-visita/disponibilidad` - Verificar disponibilidad
+- `POST /reservas-visita` - Crear reserva
+- `GET /reservas-visita/usuario` - Reservas del usuario
 
-### Adeudos
-- `GET /adeudos/` - Obtener todos los adeudos
-- `GET /adeudos/{departamento_id}` - Obtener adeudos por departamento
-- `POST /adeudos/` - Crear nuevo adeudo
+## 🎨 Características de la UI
 
-## Tecnologías Utilizadas
+- **Diseño responsivo**: Adaptable a dispositivos móviles y desktop
+- **Tailwind CSS**: Estilos modernos y consistentes
+- **Indicadores visuales**: Colores rojos para adeudos, estados de reserva
+- **Validaciones en tiempo real**: Feedback inmediato al usuario
+- **Navegación intuitiva**: Flujo claro entre secciones
 
-### Backend
-- **FastAPI** - Framework web moderno y rápido
-- **SQLAlchemy** - ORM para base de datos
-- **Pydantic** - Validación de datos
-- **SQLite** - Base de datos ligera
-- **Uvicorn** - Servidor ASGI
+## 🔒 Seguridad
 
-### Frontend
-- **React 18** - Biblioteca de interfaz de usuario
-- **TypeScript** - Tipado estático
-- **Tailwind CSS v4** - Framework de CSS utilitario (via CDN)
-- **React Router** - Enrutamiento
-- **Axios** - Cliente HTTP
-- **Lucide React** - Iconos
-- **Vite** - Herramienta de construcción
+- **OAuth 2.0**: Autenticación segura con proveedores externos
+- **JWT Tokens**: Manejo seguro de sesiones
+- **Validación de permisos**: Control de acceso basado en roles
+- **Validación de datos**: Verificación de entrada en frontend y backend
+- **Protección CSRF**: Headers de seguridad configurados
 
-## Desarrollo
+## 📊 Base de Datos
 
-### Estructura de Componentes
+### Tablas Principales
+- **usuarios**: Información de usuarios autenticados
+- **departamentos**: Departamentos de la residencia
+- **estacionamientos**: Vehículos registrados
+- **areas_comunes**: Áreas disponibles para reserva
+- **lugares_visita**: Lugares de visita
+- **reservas_area_comun**: Reservas de áreas comunes
+- **reservas_visita**: Reservas de lugares de visita
+- **adeudos**: Control de adeudos por departamento
 
+## 🚀 Despliegue
+
+### Backend (Producción)
+```bash
+# Usar Gunicorn para producción
+pip install gunicorn
+gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker
 ```
-src/
-├── components/
-│   └── Navbar.tsx              # Navegación principal
-├── pages/
-│   ├── Home.tsx                # Dashboard principal
-│   └── Estacionamientos.tsx    # Gestión de estacionamientos
-├── services/
-│   └── api.ts                  # Servicios de API
-├── types/
-│   └── index.ts                # Tipos TypeScript
-└── config/
-    └── api.ts                  # Configuración de API
+
+### Frontend (Producción)
+```bash
+npm run build
+# Servir archivos estáticos desde dist/
 ```
 
-### Estilos
-
-El proyecto utiliza Tailwind CSS con clases personalizadas:
-- `.btn-primary` - Botón primario
-- `.btn-secondary` - Botón secundario
-- `.card` - Contenedor de tarjeta
-- `.input-field` - Campo de entrada
-
-## Contribución
+## 🤝 Contribución
 
 1. Fork el proyecto
 2. Crear una rama para tu feature (`git checkout -b feature/AmazingFeature`)
@@ -183,10 +220,10 @@ El proyecto utiliza Tailwind CSS con clases personalizadas:
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abrir un Pull Request
 
-## Licencia
+## 📝 Licencia
 
 Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
 
-## Contacto
+## 📞 Soporte
 
-Para preguntas o soporte, contactar al equipo de desarrollo.
+Para soporte técnico o preguntas sobre el proyecto, contactar a través de los issues del repositorio.

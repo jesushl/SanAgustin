@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Car, 
@@ -6,10 +6,13 @@ import {
   Calendar, 
   DollarSign, 
   QrCode,
-  Clock
+  Clock,
+  Play
 } from 'lucide-react';
+import DemoMode from '../components/DemoMode';
 
 const Home: React.FC = () => {
+  const [showDemoMode, setShowDemoMode] = useState(false);
   const stats = [
     {
       name: 'Estacionamientos',
@@ -43,6 +46,13 @@ const Home: React.FC = () => {
 
   const quickActions = [
     {
+      name: 'Modo Demo',
+      description: 'Explorar sin registro',
+      icon: Play,
+      action: () => setShowDemoMode(true),
+      color: 'bg-orange-50 text-orange-700 hover:bg-orange-100'
+    },
+    {
       name: 'Registrar Visita',
       description: 'Registrar un vehículo de visita',
       icon: Car,
@@ -62,13 +72,6 @@ const Home: React.FC = () => {
       icon: QrCode,
       href: '/qr',
       color: 'bg-purple-50 text-purple-700 hover:bg-purple-100'
-    },
-    {
-      name: 'Registrar Adeudo',
-      description: 'Registrar nuevo adeudo',
-      icon: DollarSign,
-      href: '/adeudos',
-      color: 'bg-red-50 text-red-700 hover:bg-red-100'
     }
   ];
 
@@ -117,12 +120,13 @@ const Home: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {quickActions.map((action) => {
               const Icon = action.icon;
+              const Component = action.action ? 'button' : Link;
+              const props = action.action 
+                ? { onClick: action.action, className: `${action.color} p-6 rounded-lg border transition-colors duration-200 w-full text-left` }
+                : { to: action.href, className: `${action.color} p-6 rounded-lg border transition-colors duration-200` };
+              
               return (
-                <Link
-                  key={action.name}
-                  to={action.href}
-                  className={`${action.color} p-6 rounded-lg border transition-colors duration-200`}
-                >
+                <Component key={action.name} {...props}>
                   <div className="flex items-center">
                     <Icon className="w-8 h-8 mr-4" />
                     <div>
@@ -130,7 +134,7 @@ const Home: React.FC = () => {
                       <p className="text-sm opacity-75">{action.description}</p>
                     </div>
                   </div>
-                </Link>
+                </Component>
               );
             })}
           </div>
@@ -183,6 +187,11 @@ const Home: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      {/* Demo Mode Modal */}
+      {showDemoMode && (
+        <DemoMode onClose={() => setShowDemoMode(false)} />
+      )}
     </div>
   );
 };

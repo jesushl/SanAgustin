@@ -1,45 +1,18 @@
-import React from 'react';
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import Estacionamientos from './pages/Estacionamientos';
-
-// Páginas placeholder para las demás secciones
-const Contactos: React.FC = () => (
-  <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-    <div className="text-center">
-      <h1 className="text-3xl font-bold text-gray-900 mb-4">Contactos</h1>
-      <p className="text-gray-600">Página en desarrollo</p>
-    </div>
-  </div>
-);
-
-const Reservas: React.FC = () => (
-  <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-    <div className="text-center">
-      <h1 className="text-3xl font-bold text-gray-900 mb-4">Reservas</h1>
-      <p className="text-gray-600">Página en desarrollo</p>
-    </div>
-  </div>
-);
-
-const Adeudos: React.FC = () => (
-  <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-    <div className="text-center">
-      <h1 className="text-3xl font-bold text-gray-900 mb-4">Adeudos</h1>
-      <p className="text-gray-600">Página en desarrollo</p>
-    </div>
-  </div>
-);
-
-const QR: React.FC = () => (
-  <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-    <div className="text-center">
-      <h1 className="text-3xl font-bold text-gray-900 mb-4">Generador de QR</h1>
-      <p className="text-gray-600">Página en desarrollo</p>
-    </div>
-  </div>
-);
+import Login from './pages/Login';
+import Register from './pages/Register';
+import RegistrationSuccess from './pages/RegistrationSuccess';
+import AdminPanel from './pages/AdminPanel';
+import PanelResidente from './pages/PanelResidente';
+import ReservaAreaComun from './pages/ReservaAreaComun';
+import ReservaVisitaPage from './pages/ReservaVisita';
+import EditarVehiculo from './pages/EditarVehiculo';
+import AuthSuccess from './pages/AuthSuccess';
+import AuthError from './pages/AuthError';
+import './App.css';
 
 function App() {
   return (
@@ -48,11 +21,16 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/estacionamientos" element={<Estacionamientos />} />
-          <Route path="/contactos" element={<Contactos />} />
-          <Route path="/reservas" element={<Reservas />} />
-          <Route path="/adeudos" element={<Adeudos />} />
-          <Route path="/qr" element={<QR />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/registration-success" element={<RegistrationSuccess />} />
+          <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/panel-residente" element={<PanelResidente />} />
+          <Route path="/reserva-area-comun" element={<ReservaAreaComun />} />
+          <Route path="/reserva-visita" element={<ReservaVisitaPage />} />
+          <Route path="/editar-vehiculo" element={<EditarVehiculo />} />
+          <Route path="/auth-success" element={<AuthSuccess />} />
+          <Route path="/auth-error" element={<AuthError />} />
         </Routes>
       </div>
     </Router>

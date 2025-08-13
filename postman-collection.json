@@ -1,0 +1,511 @@
+{
+  "info": {
+    "name": "San Agustín - API Collection",
+    "description": "Colección completa de endpoints para el Sistema de Gestión de Residencias San Agustín",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "frontend_url",
+      "value": "http://localhost:5173",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "🔧 Health & Status",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            }
+          }
+        },
+        {
+          "name": "Root Endpoint",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": ["{{base_url}}"],
+              "path": [""]
+            }
+          }
+        },
+        {
+          "name": "API Documentation",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/docs",
+              "host": ["{{base_url}}"],
+              "path": ["docs"]
+            }
+          }
+        },
+        {
+          "name": "OpenAPI Schema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/openapi.json",
+              "host": ["{{base_url}}"],
+              "path": ["openapi.json"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔐 Authentication",
+      "item": [
+        {
+          "name": "Google OAuth Login",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/google/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "google", "login"]
+            }
+          }
+        },
+        {
+          "name": "Facebook OAuth Login",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/facebook/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "facebook", "login"]
+            }
+          }
+        },
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"nombre\": \"Test\",\n  \"apellido\": \"User\",\n  \"provider\": \"test\",\n  \"provider_id\": \"123\",\n  \"telefono\": \"123456789\",\n  \"direccion\": \"Test Address\",\n  \"departamento\": \"A1\",\n  \"notas_adicionales\": \"Test user\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Get Pending Registrations (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/pending-registrations",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "pending-registrations"]
+            }
+          }
+        },
+        {
+          "name": "Approve Registration (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/approve-registration/1",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "approve-registration", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Current User Info",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/me",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👤 Panel Residente",
+      "item": [
+        {
+          "name": "Get Panel Residente",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/panel-residente",
+              "host": ["{{base_url}}"],
+              "path": ["panel-residente"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏢 Áreas Comunes",
+      "item": [
+        {
+          "name": "Get Areas Comunes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/areas-comunes",
+              "host": ["{{base_url}}"],
+              "path": ["areas-comunes"]
+            }
+          }
+        },
+        {
+          "name": "Check Area Común Availability",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reservas-area-comun/disponibilidad?area_comun_id=1&fecha_inicio=2024-01-01T10:00:00&fecha_fin=2024-01-01T12:00:00",
+              "host": ["{{base_url}}"],
+              "path": ["reservas-area-comun", "disponibilidad"],
+              "query": [
+                {
+                  "key": "area_comun_id",
+                  "value": "1"
+                },
+                {
+                  "key": "fecha_inicio",
+                  "value": "2024-01-01T10:00:00"
+                },
+                {
+                  "key": "fecha_fin",
+                  "value": "2024-01-01T12:00:00"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Area Común Reservation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"area_comun_id\": 1,\n  \"periodo_inicio\": \"2024-01-01T10:00:00\",\n  \"periodo_fin\": \"2024-01-01T12:00:00\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reservas-area-comun",
+              "host": ["{{base_url}}"],
+              "path": ["reservas-area-comun"]
+            }
+          }
+        },
+        {
+          "name": "Get User Area Común Reservations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reservas-area-comun/usuario",
+              "host": ["{{base_url}}"],
+              "path": ["reservas-area-comun", "usuario"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🚗 Lugares de Visita",
+      "item": [
+        {
+          "name": "Get Lugares Visita",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/lugares-visita",
+              "host": ["{{base_url}}"],
+              "path": ["lugares-visita"]
+            }
+          }
+        },
+        {
+          "name": "Check Lugar Visita Availability",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reservas-visita/disponibilidad?lugar_visita_id=1&fecha_inicio=2024-01-01T10:00:00&fecha_fin=2024-01-01T12:00:00",
+              "host": ["{{base_url}}"],
+              "path": ["reservas-visita", "disponibilidad"],
+              "query": [
+                {
+                  "key": "lugar_visita_id",
+                  "value": "1"
+                },
+                {
+                  "key": "fecha_inicio",
+                  "value": "2024-01-01T10:00:00"
+                },
+                {
+                  "key": "fecha_fin",
+                  "value": "2024-01-01T12:00:00"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Visita Reservation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lugar_visita_id\": 1,\n  \"placa_visita\": \"ABC123\",\n  \"periodo_inicio\": \"2024-01-01T10:00:00\",\n  \"periodo_fin\": \"2024-01-01T12:00:00\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reservas-visita",
+              "host": ["{{base_url}}"],
+              "path": ["reservas-visita"]
+            }
+          }
+        },
+        {
+          "name": "Get User Visita Reservations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reservas-visita/usuario",
+              "host": ["{{base_url}}"],
+              "path": ["reservas-visita", "usuario"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🅿️ Estacionamiento",
+      "item": [
+        {
+          "name": "Update Estacionamiento",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"ABC123\",\n  \"modelo_auto\": \"Toyota Corolla\",\n  \"color_auto\": \"Blanco\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/estacionamiento/1",
+              "host": ["{{base_url}}"],
+              "path": ["estacionamiento", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🌐 Frontend Pages",
+      "item": [
+        {
+          "name": "Home Page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{frontend_url}}/",
+              "host": ["{{frontend_url}}"],
+              "path": [""]
+            }
+          }
+        },
+        {
+          "name": "Login Page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{frontend_url}}/login",
+              "host": ["{{frontend_url}}"],
+              "path": ["login"]
+            }
+          }
+        },
+        {
+          "name": "Register Page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{frontend_url}}/register",
+              "host": ["{{frontend_url}}"],
+              "path": ["register"]
+            }
+          }
+        },
+        {
+          "name": "Panel Residente Page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{frontend_url}}/panel-residente",
+              "host": ["{{frontend_url}}"],
+              "path": ["panel-residente"]
+            }
+          }
+        },
+        {
+          "name": "Admin Panel Page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{frontend_url}}/admin",
+              "host": ["{{frontend_url}}"],
+              "path": ["admin"]
+            }
+          }
+        },
+        {
+          "name": "Reserva Area Común Page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{frontend_url}}/reserva-area-comun",
+              "host": ["{{frontend_url}}"],
+              "path": ["reserva-area-comun"]
+            }
+          }
+        },
+        {
+          "name": "Reserva Visita Page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{frontend_url}}/reserva-visita",
+              "host": ["{{frontend_url}}"],
+              "path": ["reserva-visita"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
