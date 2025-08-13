@@ -19,7 +19,7 @@ def get_db():
         db.close()
 
 # Dependency para obtener el usuario actual
-def get_current_user(token: str = Depends(oauth), db: Session = Depends(get_db)):
+def get_current_user(token: str = Depends(lambda: None), db: Session = Depends(get_db)):
     auth_service = AuthService(db)
     payload = auth_service.verify_token(token)
     email = payload.get("sub")

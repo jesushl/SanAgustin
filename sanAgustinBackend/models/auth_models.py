@@ -21,6 +21,8 @@ class Usuario(Base):
     
     # Relación con Contacto
     contacto = relationship("Contacto", back_populates="usuario", uselist=False)
+    # Relación con Departamento
+    departamento = relationship("Departamento", back_populates="usuario", uselist=False)
 
 class RegistroPendiente(Base):
     __tablename__ = "registros_pendientes"

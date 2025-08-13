@@ -1,116 +1,150 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { 
-  Home, 
-  Car, 
-  Users, 
-  Calendar, 
-  DollarSign, 
-  QrCode,
-  Menu,
-  X
-} from 'lucide-react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const Navbar: React.FC = () => {
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation();
 
-  const navigation = [
-    { name: 'Inicio', href: '/', icon: Home },
-    { name: 'Estacionamientos', href: '/estacionamientos', icon: Car },
-    { name: 'Contactos', href: '/contactos', icon: Users },
-    { name: 'Reservas', href: '/reservas', icon: Calendar },
-    { name: 'Adeudos', href: '/adeudos', icon: DollarSign },
-    { name: 'QR', href: '/qr', icon: QrCode },
-  ];
-
-  const isActive = (path: string) => location.pathname === path;
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
-    <nav className="bg-white shadow-lg border-b border-gray-200">
+    <nav className="bg-white shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <Link to="/" className="flex items-center">
-                <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">SA</span>
-                </div>
-                <span className="ml-2 text-xl font-semibold text-gray-900">
-                  San Agustín
-                </span>
+          <div className="flex">
+            <div className="flex-shrink-0 flex items-center">
+              <Link to="/" className="text-xl font-bold text-gray-900">
+                San Agustín
               </Link>
             </div>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                    isActive(item.href)
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'
-                  }`}
+          <div className="hidden sm:ml-6 sm:flex sm:items-center">
+            {isAuthenticated ? (
+              <div className="flex items-center space-x-4">
+                <span className="text-sm text-gray-700">
+                  Bienvenido, {user?.email}
+                </span>
+                {user?.isAdmin ? (
+                  <Link
+                    to="/admin"
+                    className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Panel Admin
+                  </Link>
+                ) : (
+                  <Link
+                    to="/panel-residente"
+                    className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Panel Residente
+                  </Link>
+                )}
+                <button
+                  onClick={handleLogout}
+                  className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  <Icon className="w-4 h-4 mr-2" />
-                  {item.name}
+                  Cerrar Sesión
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-4">
+                <Link
+                  to="/login"
+                  className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Iniciar Sesión
                 </Link>
-              );
-            })}
-            
-            {/* Login Button */}
-            <Link
-              to="/login"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-            >
-              Iniciar Sesión
-            </Link>
+                <Link
+                  to="/register"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
+                >
+                  Registrarse
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="sm:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-600 hover:text-gray-900 focus:outline-none focus:text-gray-900"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
             >
+              <span className="sr-only">Abrir menú principal</span>
               {isMenuOpen ? (
-                <X className="w-6 h-6" />
+                <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
               ) : (
-                <Menu className="w-6 h-6" />
+                <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
               )}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
-            {navigation.map((item) => {
-              const Icon = item.icon;
-              return (
+        <div className="sm:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1">
+            {isAuthenticated ? (
+              <>
+                <div className="px-3 py-2 text-sm text-gray-700">
+                  Bienvenido, {user?.email}
+                </div>
+                {user?.isAdmin ? (
+                  <Link
+                    to="/admin"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Panel Admin
+                  </Link>
+                ) : (
+                  <Link
+                    to="/panel-residente"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Panel Residente
+                  </Link>
+                )}
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setIsMenuOpen(false);
+                  }}
+                  className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                >
+                  Cerrar Sesión
+                </button>
+              </>
+            ) : (
+              <>
                 <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`flex items-center px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
-                    isActive(item.href)
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'
-                  }`}
+                  to="/login"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <Icon className="w-5 h-5 mr-3" />
-                  {item.name}
+                  Iniciar Sesión
                 </Link>
-              );
-            })}
+                <Link
+                  to="/register"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Registrarse
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}
